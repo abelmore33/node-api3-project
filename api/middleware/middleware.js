@@ -6,6 +6,7 @@ function logger(req, res, next) {
   console.log(`Method : ${method}
   Request Url: ${requestUrl}
   Time : ${timeStamp}}`);
+  next();
 }
 
 function validateUserId(req, res, next) {
