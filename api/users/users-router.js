@@ -14,22 +14,29 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   // RETURN AN ARRAY WITH ALL THE USERS
-  Users.get().then((user) => {
+  Users.get(req.body).then((user) => {
     res.status(200).json(user);
   });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateUserId, (req, res) => {
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
+  Users.getById(req.params.id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      message: "ewewe";
+    });
 });
 
 router.post("/", validateUser, (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
-  Users.insert().then((newUser) => {
-    res.status(200).json(newUser);
-  });
+  // Users.insert().then((newUser) => {
+  //   res.status(200).json(newUser);
+  // }).catch(err => )
 });
 
 router.put("/:id", (req, res) => {

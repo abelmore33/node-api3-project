@@ -1,3 +1,4 @@
+const User = require("../users/users-model");
 function logger(req, res, next) {
   // DO YOUR MAGIC
   const method = req.method;
@@ -9,8 +10,24 @@ function logger(req, res, next) {
   next();
 }
 
-function validateUserId(req, res, next) {
+async function validateUserId(req, res, next) {
   // DO YOUR MAGIC
+  try {
+    const { id } = req.params;
+    const user = await User.getById(id);
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(404).json({
+        message: "user not found",
+      });
+    }
+  } catch {
+    res.status(500).json({
+      message: "No user found",
+    });
+  }
 }
 
 function validateUser(req, res, next) {
