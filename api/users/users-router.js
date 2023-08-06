@@ -50,12 +50,18 @@ router.put("/:id", validateUserId, validateUser, (req, res, next) => {
     .catch(next);
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateUserId, (req, res, next) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
+  const user = Users.getById(req.params.id);
+  Users.remove(req.params.id)
+    .then((removed) => {
+      res.json(req.user);
+    })
+    .catch(next);
 });
 
-router.get("/:id/posts", (req, res) => {
+router.get("/:id/posts", validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
 });
